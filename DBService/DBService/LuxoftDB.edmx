@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="luxoftdatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'luxoftdatabase.dbo.Links' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Links">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="FullUrl" />
+            <PropertyRef Name="ShortUrl" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="FullUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ShortUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ClicksNumber" Type="int" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Identifier" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Links__UserId__2B3F6F97">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Links" Type="Self.Links" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Links">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="luxoftdatabaseModelStoreContainer">
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Links" EntityType="Self.Links" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Links].[UserId] AS [UserId], 
+    [Links].[FullUrl] AS [FullUrl], 
+    [Links].[ShortUrl] AS [ShortUrl], 
+    [Links].[ClicksNumber] AS [ClicksNumber]
+    FROM [dbo].[Links] AS [Links]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Links__UserId__2B3F6F97" Association="Self.FK__Links__UserId__2B3F6F97">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Links" EntitySet="Links" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="luxoftdatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Identifier" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Links" Relationship="Self.FK__Links__UserId__2B3F6F97" FromRole="Users" ToRole="Links" />
+        </EntityType>
+        <EntityType Name="Link">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="FullUrl" />
+            <PropertyRef Name="ShortUrl" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FullUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ShortUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClicksNumber" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Links__UserId__2B3F6F97" FromRole="Links" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK__Links__UserId__2B3F6F97">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Links" Type="Self.Link" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Links">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="luxoftdatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Links" EntityType="Self.Link" />
+          <AssociationSet Name="FK__Links__UserId__2B3F6F97" Association="Self.FK__Links__UserId__2B3F6F97">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Links" EntitySet="Links" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="luxoftdatabaseModelStoreContainer" CdmEntityContainer="luxoftdatabaseEntities">
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="luxoftdatabaseModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Identifier" ColumnName="Identifier" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Links">
+            <EntityTypeMapping TypeName="luxoftdatabaseModel.Link">
+              <MappingFragment StoreEntitySet="Links">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FullUrl" ColumnName="FullUrl" />
+                <ScalarProperty Name="ShortUrl" ColumnName="ShortUrl" />
+                <ScalarProperty Name="ClicksNumber" ColumnName="ClicksNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
