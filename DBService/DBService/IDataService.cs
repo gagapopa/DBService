@@ -18,5 +18,8 @@ namespace DBService
 
         [OperationContract]
         string GetUserLinks(string guid);
+
+        [OperationContract]
+        string InsertLinkOrCreateUser(string fullLink, int? userId);
 	}
 }

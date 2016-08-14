@@ -37,5 +37,45 @@ namespace DBService
                 return "ERROR:" + ex.Message;
             }
         }
+        public string InsertLinkOrCreateUser(string fullLink, int? userId)
+        {
+            try
+            {
+                logger.Info("InsertLinkOrCreateUser: " + "fullLink " + fullLink + "userId " + userId);
+
+                string result;
+                using (var context = new luxoftdatabaseEntities())
+                {
+                    result = context.insertLinkOrCreateUser(fullLink, userId).FirstOrDefault();
+                }
+               
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+                return "ERROR:" + ex.Message;
+            }
+        }
+        public string IncrementLink(string linkId)
+        {
+            try
+            {
+                logger.Info("IncrementLink: " + "linkId " + linkId);
+
+                string result;
+                using (var context = new luxoftdatabaseEntities())
+                {
+                    result = context.incrementLink(linkId.DecodeFromBase()).FirstOrDefault();
+                }
+               
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+                return "ERROR:" + ex.Message;
+            }
+        }
 	}
 }

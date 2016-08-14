@@ -55,5 +55,36 @@ namespace DBService.Tests
 
             Assert.That(assert, Is.Null);
         }
+
+        [Test()]
+        public void InsertLinkOrCreateUserTest()
+        {
+            var dataService = new DataService();
+
+            var assert = dataService.InsertLinkOrCreateUser("http://google.com", 3);
+
+            Assert.That(assert, Is.Not.Null.Or.Not.Empty);
+        }
+
+        [Test()]
+        public void InsertLinkOrCreateUserTest1()
+        {
+            var dataService = new DataService();
+
+            var assert = dataService.InsertLinkOrCreateUser("http://google.com", null);
+
+            Assert.That(assert, Is.Not.Null.Or.Not.Empty);
+        }
+
+        [Test()]
+        public void IncrementLinkTest()
+        {
+            var dataService = new DataService();
+
+            var assert = dataService.IncrementLink("5");
+
+            Assert.That(assert, Is.Not.Null.Or.Not.Empty);
+            Assert.That(assert, Does.Contain("google"));
+        }
     }
 }
