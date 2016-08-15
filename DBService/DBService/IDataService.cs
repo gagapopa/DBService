@@ -13,13 +13,13 @@ namespace DBService
 	public interface IDataService
 	{
 
-		[OperationContract]
-		string GetData(int value);
-
         [OperationContract]
         string GetUserLinks(string guid);
 
         [OperationContract]
         string InsertLinkOrCreateUser(string fullLink, int? userId);
+
+        [OperationContract]
+        string IncrementLink(string linkId);
 	}
 }
