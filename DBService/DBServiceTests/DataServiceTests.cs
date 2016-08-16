@@ -81,7 +81,7 @@ namespace DBService.Tests
         {
             var dataService = new DataService();
 
-            var assert = dataService.IncrementLink("5");
+            var assert = dataService.IncrementLink("Q");
 
             Assert.That(assert, Is.Not.Null.Or.Not.Empty);
             Assert.That(assert, Does.Contain("google"));

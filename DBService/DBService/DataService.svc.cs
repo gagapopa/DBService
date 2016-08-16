@@ -12,10 +12,6 @@ namespace DBService
 	public class DataService : IDataService
 	{
         static Logger logger = LogManager.GetCurrentClassLogger();
-		public string GetData(int value)
-		{
-			return string.Format("You entered: {0}", value);
-		}
 
         public string GetUserLinks(string guid)
         {
