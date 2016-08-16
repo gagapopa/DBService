@@ -1,7 +1,7 @@
 ﻿USE [luxoftdatabase]
 GO
 
-/****** Object: SqlProcedure [dbo].[getUserLinks] Script Date: 8/14/2016 9:45:57 PM ******/
+/****** Object: SqlProcedure [dbo].[getUserLinks] Script Date: 8/16/2016 1:20:45 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -20,7 +20,7 @@ BEGIN TRY
 
     select 
         *, 
-        (SELECT dbo.fnBase36(l.LinkId) as 'LinkId',l.UserId,l.FullUrl,l.ClicksNumber from dbo.Links l where l.UserId = u.UserId for xml PATH('Link'), TYPE, elements xsinil)
+        (SELECT dbo.fnBase36(l.LinkId) as 'LinkId',l.UserId,l.FullUrl,l.ClicksNumber, l.CreationDate from dbo.Links l where l.UserId = u.UserId for xml PATH('Link'), TYPE, elements xsinil)
     from dbo.Users u
     where u.Identifier = @Ident
     for xml PATH('User'), ELEMENTS XSINIL

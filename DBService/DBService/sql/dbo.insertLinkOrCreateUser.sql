@@ -1,7 +1,7 @@
 ﻿USE [luxoftdatabase]
 GO
 
-/****** Object: SqlProcedure [dbo].[insertLinkOrCreateUser] Script Date: 8/14/2016 8:37:19 PM ******/
+/****** Object: SqlProcedure [dbo].[insertLinkOrCreateUser] Script Date: 8/16/2016 1:28:48 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -20,12 +20,12 @@ BEGIN TRANSACTION;
 BEGIN TRY
 if @UserId is not null and exists(select top 1 * from dbo.Users where UserId = @UserId)
     begin
-        insert INTO dbo.Links VALUES(@UserId,@fullLink,0)
+        insert INTO dbo.Links VALUES(@UserId,@fullLink,0,GETUTCDATE())
 
 
         select 
             *, 
-            (SELECT dbo.fnBase36(l.LinkId) as 'LinkId',l.UserId,l.FullUrl,l.ClicksNumber from dbo.Links l where l.UserId = u.UserId for xml PATH('Link'), TYPE, elements xsinil)
+            (SELECT dbo.fnBase36(l.LinkId) as 'LinkId',l.UserId,l.FullUrl,l.ClicksNumber, l.CreationDate from dbo.Links l where l.UserId = u.UserId for xml PATH('Link'), TYPE, elements xsinil)
         from dbo.Users u
         where u.UserId = @UserId
         for xml PATH('User'), ELEMENTS XSINIL
@@ -36,11 +36,11 @@ else
 
         DECLARE @newUserId int = (select top 1 UserId from dbo.Users order by UserId desc)
 
-        INSERT INTO dbo.Links VALUES(@newUserId,@fullLink,0)
+        INSERT INTO dbo.Links VALUES(@newUserId,@fullLink,0,GETUTCDATE())
 
         select 
             *, 
-            (SELECT dbo.fnBase36(l.LinkId) as 'LinkId',l.UserId,l.FullUrl,l.ClicksNumber from dbo.Links l where l.UserId = u.UserId for xml PATH('Link'), TYPE, elements xsinil)
+            (SELECT dbo.fnBase36(l.LinkId) as 'LinkId',l.UserId,l.FullUrl,l.ClicksNumber, l.CreationDate from dbo.Links l where l.UserId = u.UserId for xml PATH('Link'), TYPE, elements xsinil)
         from dbo.Users u
         where u.UserId = @newUserId
         for xml PATH('User'), ELEMENTS XSINIL
